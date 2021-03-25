@@ -107,10 +107,10 @@
     </div>
 	<?php
 		if(isset($_POST['signin'])){
-			echo"<script>window.location.replace('auth-login-social.html')</script>";
+			echo"<script>window.location.replace('auth-login-social.php')</script>";
 		}
 		if(isset($_POST['signup'])){
-			echo"<script>window.location.replace('auth-register-basic.html')</script>";
+			echo"<script>window.location.replace('auth-register-basic.php')</script>";
 		}
 	?>
     <!-- Background image -->
