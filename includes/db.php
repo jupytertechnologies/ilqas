@@ -33,9 +33,9 @@ Class Db {
 	
 	protected function connect(){
 		$this->servername = "localhost";
-		$this->username = "u248916977_root";
-		$this->password = "Ilqas@2021";
-		$this->dbname = "u248916977_ilqas";
+		$this->username = "root";
+		$this->password = "";
+		$this->dbname = "ilqas";
 		
 		$conn = new mysqli($this->servername, $this->username, $this->password, $this->dbname);
 		

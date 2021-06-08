@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.0
+-- version 5.0.4
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Jun 06, 2021 at 12:35 PM
--- Server version: 10.4.19-MariaDB
--- PHP Version: 8.0.6
+-- Host: localhost
+-- Generation Time: Jun 08, 2021 at 07:40 AM
+-- Server version: 10.4.17-MariaDB
+-- PHP Version: 8.0.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -20,6 +20,17 @@ SET time_zone = "+00:00";
 --
 -- Database: `ilqas`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `accredited_status`
+--
+
+CREATE TABLE `accredited_status` (
+  `accredited_id` int(11) NOT NULL,
+  `accredited_name` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -153,6 +164,17 @@ INSERT INTO `district` (`district_id`, `district_name`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `equipment`
+--
+
+CREATE TABLE `equipment` (
+  `equipment_id` int(11) NOT NULL,
+  `equipment_name` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `lab_details`
 --
 
@@ -189,6 +211,17 @@ INSERT INTO `lab_details` (`lab_detail_id`, `user_id`, `lab_name`, `region`, `di
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `lab_test`
+--
+
+CREATE TABLE `lab_test` (
+  `test_id` int(11) NOT NULL,
+  `test_name` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `level`
 --
 
@@ -212,6 +245,29 @@ INSERT INTO `level` (`level_id`, `level_name`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `parameter`
+--
+
+CREATE TABLE `parameter` (
+  `parameter_id` int(11) NOT NULL,
+  `parameter_name` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `payment_made`
+--
+
+CREATE TABLE `payment_made` (
+  `payment_id` int(11) NOT NULL,
+  `status_id` int(11) NOT NULL,
+  `payment_name` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `payment_mode`
 --
 
@@ -227,6 +283,17 @@ CREATE TABLE `payment_mode` (
 INSERT INTO `payment_mode` (`payment_mode_id`, `payment_mode_name`) VALUES
 (1, 'Bank Transfer'),
 (2, 'Mobile Money');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `payment_status`
+--
+
+CREATE TABLE `payment_status` (
+  `status_id` int(11) NOT NULL,
+  `status_name` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -285,6 +352,35 @@ INSERT INTO `relationship` (`relationship_id`, `relationship_name`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `request`
+--
+
+CREATE TABLE `request` (
+  `request_id` int(11) NOT NULL,
+  `lab_id` int(11) NOT NULL,
+  `schedule_id` int(11) NOT NULL,
+  `labtest_id` int(11) NOT NULL,
+  `parameter__id` int(11) NOT NULL,
+  `equipment_id` int(11) NOT NULL,
+  `request_date` timestamp(6) NOT NULL DEFAULT current_timestamp(6) ON UPDATE current_timestamp(6),
+  `payment__status` int(11) NOT NULL,
+  `payment__id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `schedule`
+--
+
+CREATE TABLE `schedule` (
+  `schedule_id` int(11) NOT NULL,
+  `schedule_name` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `users`
 --
 
@@ -313,10 +409,22 @@ INSERT INTO `users` (`user_id`, `first_name`, `last_name`, `email`, `password`, 
 --
 
 --
+-- Indexes for table `accredited_status`
+--
+ALTER TABLE `accredited_status`
+  ADD PRIMARY KEY (`accredited_id`);
+
+--
 -- Indexes for table `district`
 --
 ALTER TABLE `district`
   ADD PRIMARY KEY (`district_id`);
+
+--
+-- Indexes for table `equipment`
+--
+ALTER TABLE `equipment`
+  ADD PRIMARY KEY (`equipment_id`);
 
 --
 -- Indexes for table `lab_details`
@@ -325,16 +433,40 @@ ALTER TABLE `lab_details`
   ADD PRIMARY KEY (`lab_detail_id`);
 
 --
+-- Indexes for table `lab_test`
+--
+ALTER TABLE `lab_test`
+  ADD PRIMARY KEY (`test_id`);
+
+--
 -- Indexes for table `level`
 --
 ALTER TABLE `level`
   ADD PRIMARY KEY (`level_id`);
 
 --
+-- Indexes for table `parameter`
+--
+ALTER TABLE `parameter`
+  ADD PRIMARY KEY (`parameter_id`);
+
+--
+-- Indexes for table `payment_made`
+--
+ALTER TABLE `payment_made`
+  ADD PRIMARY KEY (`payment_id`);
+
+--
 -- Indexes for table `payment_mode`
 --
 ALTER TABLE `payment_mode`
   ADD PRIMARY KEY (`payment_mode_id`);
+
+--
+-- Indexes for table `payment_status`
+--
+ALTER TABLE `payment_status`
+  ADD PRIMARY KEY (`status_id`);
 
 --
 -- Indexes for table `region`
@@ -349,6 +481,25 @@ ALTER TABLE `relationship`
   ADD PRIMARY KEY (`relationship_id`);
 
 --
+-- Indexes for table `request`
+--
+ALTER TABLE `request`
+  ADD PRIMARY KEY (`request_id`),
+  ADD KEY `equipment_id` (`equipment_id`),
+  ADD KEY `labtest_id` (`labtest_id`),
+  ADD KEY `request_ibfk_1` (`lab_id`),
+  ADD KEY `schedule_id` (`schedule_id`),
+  ADD KEY `parameter__id` (`parameter__id`),
+  ADD KEY `payment__id` (`payment__id`),
+  ADD KEY `payment__status` (`payment__status`);
+
+--
+-- Indexes for table `schedule`
+--
+ALTER TABLE `schedule`
+  ADD PRIMARY KEY (`schedule_id`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -359,10 +510,22 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT for table `accredited_status`
+--
+ALTER TABLE `accredited_status`
+  MODIFY `accredited_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `district`
 --
 ALTER TABLE `district`
   MODIFY `district_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=113;
+
+--
+-- AUTO_INCREMENT for table `equipment`
+--
+ALTER TABLE `equipment`
+  MODIFY `equipment_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `lab_details`
@@ -371,16 +534,40 @@ ALTER TABLE `lab_details`
   MODIFY `lab_detail_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
+-- AUTO_INCREMENT for table `lab_test`
+--
+ALTER TABLE `lab_test`
+  MODIFY `test_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `level`
 --
 ALTER TABLE `level`
   MODIFY `level_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
+-- AUTO_INCREMENT for table `parameter`
+--
+ALTER TABLE `parameter`
+  MODIFY `parameter_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `payment_made`
+--
+ALTER TABLE `payment_made`
+  MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `payment_mode`
 --
 ALTER TABLE `payment_mode`
   MODIFY `payment_mode_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `payment_status`
+--
+ALTER TABLE `payment_status`
+  MODIFY `status_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `region`
@@ -395,10 +582,32 @@ ALTER TABLE `relationship`
   MODIFY `relationship_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
+-- AUTO_INCREMENT for table `request`
+--
+ALTER TABLE `request`
+  MODIFY `request_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `schedule`
+--
+ALTER TABLE `schedule`
+  MODIFY `schedule_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
   MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `request`
+--
+ALTER TABLE `request`
+  ADD CONSTRAINT `request_ibfk_1` FOREIGN KEY (`payment__status`) REFERENCES `payment_status` (`status_id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
