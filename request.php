@@ -296,8 +296,8 @@
                             <hr class="mt-2 mb-4" />
                             <div class="row">
                                 <div class="col-lg-4 mb-4">
-                                    <!-- Knowledge base category card 1-->
-                                    <a class="card card-icon lift lift-sm mb-4" href="knowledge-base-category.html">
+                                    <!-- Make request widget -->
+                                    <a class="card card-icon lift lift-sm mb-4" href="make_request.php">
                                         <div class="row no-gutters">
                                             <div class="col-auto card-icon-aside bg-teal"><i class="text-white-50" data-feather="book"></i></div>
                                             <div class="col">
@@ -310,7 +310,7 @@
                                     </a>
                                 </div>
                                 <div class="col-lg-4 mb-4">
-                                    <!-- Knowledge base category card 2-->
+                                    <!-- links to the make_request page where info is collected -->
                                     <a class="card card-icon lift lift-sm mb-4" href="knowledge-base-category.html">
                                         <div class="row no-gutters">
                                             <div class="col-auto card-icon-aside bg-secondary"><i class="text-white-50" data-feather="users"></i></div>

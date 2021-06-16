@@ -8,6 +8,7 @@
         <meta name="description" content="" />
         <meta name="author" content="" />
         <title>ILQAS-Dashboard</title>
+        <link href="css/make_request.css" rel="stylesheet" />
         <link href="css/styles.css" rel="stylesheet" />
         <link href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" rel="stylesheet" crossorigin="anonymous" />
         <link rel="icon" type="image/x-icon" href="assets/img/favicon.png" />
@@ -284,161 +285,84 @@
             <div id="layoutSidenav_content">
                 <main>
                     <!-- Main page content-->
-                    <div class="container mt-5">
-                        <!-- Custom page header alternative example-->
-                        <div class="d-flex justify-content-between align-items-sm-center flex-column flex-sm-row mb-4">
-                            <div class="mr-4 mb-3 mb-sm-0">
-                                <h1 class="mb-0">Dashboard</h1>
-                                <div class="small">
-                                    <span class="font-weight-500 text-primary">Friday</span>
-                                    &middot; September 20, 2020 &middot; 12:16 PM
-                                </div>
-                            </div>
-                            <!-- Date range picker example button-->
-                            <button class="btn btn-white p-3" id="reportrange">
-                                <i class="mr-2 text-primary" data-feather="calendar"></i>
-                                <span></span>
-                                <i class="ml-1" data-feather="chevron-down"></i>
-                            </button>
-                        </div>
-                        <!-- Illustration dashboard card example-->
-                       
-                        <div class="row">
-                            <div class="col-xl-3 col-md-6 mb-4">
-                                <!-- Dashboard info widget 1-->
-                                <div class="card border-top-0 border-bottom-0 border-right-0 border-left-lg border-primary h-100">
-                                    <div class="card-body">
-                                        <div class="d-flex align-items-center">
-                                            <div class="flex-grow-1">
-                                                <div class="small font-weight-bold text-primary mb-1">requests</div>
-                                                <div class="h5">20</div>
-                                                <div class="text-xs font-weight-bold text-success d-inline-flex align-items-center">
-                                                    <i class="mr-1" data-feather="trending-up"></i>
-                                                    12%
-                                                </div>
-                                            </div>
-                                            <div class="ml-2"><i class="fas fa-dollar-sign fa-2x text-gray-200"></i></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-3 col-md-6 mb-4">
-                                <!-- Dashboard info widget 2-->
-                                <div class="card border-top-0 border-bottom-0 border-right-0 border-left-lg border-secondary h-100">
-                                    <div class="card-body">
-                                        <div class="d-flex align-items-center">
-                                            <div class="flex-grow-1">
-                                                <div class="small font-weight-bold text-secondary mb-1">reports</div>
-                                                <div class="h5">4</div>
-                                                <div class="text-xs font-weight-bold text-danger d-inline-flex align-items-center">
-                                                    <i class="mr-1" data-feather="trending-down"></i>
-                                                    3%
-                                                </div>
-                                            </div>
-                                            <div class="ml-2"><i class="fas fa-tag fa-2x text-gray-200"></i></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-3 col-md-6 mb-4">
-                                <!-- Dashboard info widget 3-->
-                                <div class="card border-top-0 border-bottom-0 border-right-0 border-left-lg border-success h-100">
-                                    <div class="card-body">
-                                        <div class="d-flex align-items-center">
-                                            <div class="flex-grow-1">
-                                                <div class="small font-weight-bold text-success mb-1">Deliveries</div>
-                                                <div class="h5">11,291</div>
-                                                <div class="text-xs font-weight-bold text-success d-inline-flex align-items-center">
-                                                    <i class="mr-1" data-feather="trending-up"></i>
-                                                    12%
-                                                </div>
-                                            </div>
-                                            <div class="ml-2"><i class="fas fa-mouse-pointer fa-2x text-gray-200"></i></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-3 col-md-6 mb-4">
-                                <!-- Dashboard info widget 4-->
-                                <div class="card border-top-0 border-bottom-0 border-right-0 border-left-lg border-info h-100">
-                                    <div class="card-body">
-                                        <div class="d-flex align-items-center">
-                                            <div class="flex-grow-1">
-                                                <div class="small font-weight-bold text-info mb-1">performance</div>
-                                                <div class="h5">1.23%</div>
-                                                <div class="text-xs font-weight-bold text-danger d-inline-flex align-items-center">
-                                                    <i class="mr-1" data-feather="trending-down"></i>
-                                                    1%
-                                                </div>
-                                            </div>
-                                            <div class="ml-2"><i class="fas fa-percentage fa-2x text-gray-200"></i></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
+                    <div class="container-fluid px-1 px-md-4 py-5 mx-auto">
+    <div class="row d-flex justify-content-center">
+        <div class="col-12 col-md-11 col-lg-10 col-xl-9">
+            <div class="card card0 border-0">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card card00 m-2 border-0">
+                        <div class="text-center mt-2">
+                        <h2 > Make Request</h2>
+                        </div>       
+                     
+                     <!-- request form  -->
+                   
+     <form class="container-fluid m-2 justify-content-center" method="post">
+                    
+                    <div class="form-group">
+                        <label for="exampleFormControlSelect1">Schedule name</label>
+                        <select class="form-control" id="exampleFormControlSelect1">
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleFormControlSelect1">Test name</label>
+                        <select class="form-control" id="exampleFormControlSelect1">
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleFormControlSelect1">parameter name</label>
+                        <select class="form-control" id="exampleFormControlSelect1">
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleFormControlSelect1">Equipment name</label>
+                        <select class="form-control" id="exampleFormControlSelect1">
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleFormControlSelect1">Confirm accreditation</label>
+                        <select class="form-control" id="exampleFormControlSelect1">
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                        </select>
+                    </div>
+
+                    <button type="button" class="btn btn-primary btn-md d-flex btn-block">Submit</button>
+                  
                             
-                            <div class="col-lg-11 mb-4">
-                                <!-- Area chart example-->
-                                <div class="card mb-4">
-                                    <div class="card-header">Performance Summary</div>
-                                    <div class="card-body">
-                                        <div class="chart-area"><canvas id="myAreaChart" width="100%" height="30"></canvas></div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-6">
-                                        <!-- Bar chart example-->
-                                        <div class="card h-100">
-                                            <div class="card-header">Rejected Pannels</div>
-                                            <div class="card-body d-flex flex-column justify-content-center">
-                                                <div class="chart-bar"><canvas id="myBarChart" width="100%" height="30"></canvas></div>
-                                            </div>
-                                            <div class="card-footer">
-                                                <a class="text-xs d-flex align-items-center justify-content-between" href="#!">
-                                                    View More Reports
-                                                    <i class="fas fa-long-arrow-alt-right"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <!-- Pie chart example-->
-                                        <div class="card h-100">
-                                            <div class="card-header">Submitted Pannels</div>
-                                            <div class="card-body">
-                                                <div class="chart-pie mb-4"><canvas id="myPieChart" width="100%" height="50"></canvas></div>
-                                                <div class="list-group list-group-flush">
-                                                    <div class="list-group-item d-flex align-items-center justify-content-between small px-0 py-2">
-                                                        <div class="mr-3">
-                                                            <i class="fas fa-circle fa-sm mr-1 text-blue"></i>
-                                                            Malaria
-                                                        </div>
-                                                        <div class="font-weight-500 text-dark">5</div>
-                                                    </div>
-                                                    <div class="list-group-item d-flex align-items-center justify-content-between small px-0 py-2">
-                                                        <div class="mr-3">
-                                                            <i class="fas fa-circle fa-sm mr-1 text-purple"></i>
-                                                            Typhoid
-                                                        </div>
-                                                        <div class="font-weight-500 text-dark">3</div>
-                                                    </div>
-                                                    <div class="list-group-item d-flex align-items-center justify-content-between small px-0 py-2">
-                                                        <div class="mr-3">
-                                                            <i class="fas fa-circle fa-sm mr-1 text-green"></i>
-                                                            Diabetes
-                                                        </div>
-                                                        <div class="font-weight-500 text-dark">5</div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                        </div>
+                       
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
                 </main>
             </div>
         </div>
@@ -452,5 +376,6 @@
         <script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js" crossorigin="anonymous"></script>
         <script src="assets/demo/date-range-picker-demo.js"></script>
+        <script src="js/make_request.js"></script>
     </body>
 </html>
