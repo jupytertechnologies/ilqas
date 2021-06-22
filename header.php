@@ -6,7 +6,7 @@ error_reporting(E_ALL);
 //require_once 'includes/users.php';
 	
 	$objUser = new User();
-	$datas = $objUser->get_user($user);
+	$datas = $objUser->get_user($user_id);
 	foreach ($datas as $data){
 	$user_id = $data['user_id'];
 	}

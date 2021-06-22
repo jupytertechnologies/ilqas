@@ -1,5 +1,22 @@
+<?php 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
-<!DOCTYPE html>
+include ("includes/users.php");
+include ("includes/lab.php");
+
+if(!isset($_GET['user'])){
+	echo"<script>alert('Please login to your account to access the dashboard.')/script>";
+	echo "<script>window.open('auth-login-social.php','_self')</script>";
+}else{
+	
+	session_start();
+    
+    $user = $_GET['user'];
+	$objUser = new User();
+	
+?>
 <html lang="en">
     <head>
         <meta charset="utf-8" />
@@ -228,7 +245,7 @@
                             <!-- Sidenav Heading (App Views)-->
                             <div class="sidenav-menu-heading">REQUESTS</div>
                             <!-- Sidenav Accordion (Pages)-->
-                            <a class="nav-link collapsed" href="request.php">
+                            <a class="nav-link collapsed" href="request.php?user_id=<?php echo$user; ?>">
                                 <div class="nav-link-icon"><i data-feather="grid"></i></div>
                                 Requests
                                 <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
@@ -264,11 +281,26 @@
 
                             <div class="sidenav-menu-heading">Settings</div>
                             <!-- Sidenav Accordion (Layout)-->
-                            <a class="nav-link collapsed" href="javascript:void(0);" data-toggle="collapse" data-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                            <a class="nav-link collapsed" href="javascript:void(0);" data-toggle="collapse" data-target="#settings" aria-expanded="false" aria-controls="collapseLayouts">
                                 <div class="nav-link-icon"><i data-feather="layout"></i></div>
                                 Settings
                                 <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
+							<div class="collapse" id="settings" data-parent="#accordionSidenav">
+                                <nav class="sidenav-menu-nested nav">
+                                    <?php
+								$objLab = new Labs();
+								$details = $objLab->lab_exist($user);
+								if ($details == true){
+									echo'<a class="nav-link" id="labDetails" href="lab_info.php?user_id='.$user.'">Laboratory Details</a>';	
+								}else{
+									echo'<a class="nav-link" id="labDetails" href="lab_info_edit.php?user_id='.$user.'">Laboratory Details</a>';	
+								}
+								?>
+                                    <!--<a class="nav-link" id="labDetails" onclick="loadLab('<?php //echo $userid; ?>');">Laboratory Details</a>-->
+                                    <a class="nav-link" href="preferences.php">User Preferences</a>
+                                </nav>
+                            </div>
                            
                         </div>
                     </div>
@@ -454,3 +486,4 @@
         <script src="assets/demo/date-range-picker-demo.js"></script>
     </body>
 </html>
+<?php } ?>

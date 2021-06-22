@@ -1,5 +1,21 @@
+<?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
-<!DOCTYPE html>
+include 'includes/lab.php';
+include 'includes/users.php';
+include 'includes/requestClass.php';
+//Create objects out of the included classes
+	$objRequest = new Requests();
+	$objUser = new User();
+	$objLab = new Labs();
+//Get user id from JSON http request
+if(isset($_GET['user_id'])){
+	$user_id = $_GET['user_id'];
+	
+	
+?>
 <html lang="en">
     <head>
         <meta charset="utf-8" />
@@ -7,375 +23,265 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>ILQAS-Dashboard</title>
-        <link href="css/make_request.css" rel="stylesheet" />
+        <title>Make Requests</title>
         <link href="css/styles.css" rel="stylesheet" />
         <link href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" rel="stylesheet" crossorigin="anonymous" />
         <link rel="icon" type="image/x-icon" href="assets/img/favicon.png" />
         <script data-search-pseudo-elements defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/js/all.min.js" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.28.0/feather.min.js" crossorigin="anonymous"></script>
+		<script src="js/loadPages.js"></script>
     </head>
     <body class="nav-fixed">
-        <nav class="topnav navbar navbar-expand shadow justify-content-between justify-content-sm-start navbar-light bg-white" id="sidenavAccordion">
-            <!-- Navbar Brand-->
-            <!-- * * Tip * * You can use text or an image for your navbar brand.-->
-            <!-- * * * * * * When using an image, we recommend the SVG format.-->
-            <!-- * * * * * * Dimensions: Maximum height: 32px, maximum width: 240px-->
-            <a class="navbar-brand" href="dashboard-3.php">ILQAS</a>
-            <!-- Sidenav Toggle Button-->
-            <button class="btn btn-icon btn-transparent-dark order-1 order-lg-0 mr-lg-2" id="sidebarToggle"><i data-feather="menu"></i></button>
-            <!-- Navbar Search Input-->
-            <!-- * * Note: * * Visible only on and above the md breakpoint-->
-            <form class="form-inline mr-auto d-none d-md-block mr-3">
-                <div class="input-group input-group-joined input-group-solid">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" />
-                    <div class="input-group-append">
-                        <div class="input-group-text"><i data-feather="search"></i></div>
-                    </div>
-                </div>
-            </form>
-            <!-- Navbar Items-->
-            <ul class="navbar-nav align-items-center ml-auto">
-                <!-- Documentation Dropdown-->
-                <li class="nav-item dropdown no-caret d-none d-sm-block mr-3">
-                    <a class="nav-link dropdown-toggle" id="navbarDropdownDocs" href="javascript:void(0);" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <div class="font-weight-500">Documentation</div>
-                        <i class="fas fa-chevron-right dropdown-arrow"></i>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right py-0 mr-sm-n15 mr-lg-0 o-hidden animated--fade-in-up" aria-labelledby="navbarDropdownDocs">
-                        <a class="dropdown-item py-3" href="https://docs.startbootstrap.com/sb-admin-pro" target="_blank">
-                            <div class="icon-stack bg-primary-soft text-primary mr-4"><i data-feather="book"></i></div>
-                            <div>
-                                <div class="small text-gray-500">Documentation</div>
-                                Usage instructions and reference
-                            </div>
-                        </a>
-                        <div class="dropdown-divider m-0"></div>
-                        <a class="dropdown-item py-3" href="https://docs.startbootstrap.com/sb-admin-pro/components" target="_blank">
-                            <div class="icon-stack bg-primary-soft text-primary mr-4"><i data-feather="code"></i></div>
-                            <div>
-                                <div class="small text-gray-500">Components</div>
-                                Code snippets and reference
-                            </div>
-                        </a>
-                        <div class="dropdown-divider m-0"></div>
-                        <a class="dropdown-item py-3" href="https://docs.startbootstrap.com/sb-admin-pro/changelog" target="_blank">
-                            <div class="icon-stack bg-primary-soft text-primary mr-4"><i data-feather="file-text"></i></div>
-                            <div>
-                                <div class="small text-gray-500">Changelog</div>
-                                Updates and changes
-                            </div>
-                        </a>
-                    </div>
-                </li>
-                <!-- Navbar Search Dropdown-->
-                <!-- * * Note: * * Visible only below the md breakpoint-->
-                <li class="nav-item dropdown no-caret mr-3 d-md-none">
-                    <a class="btn btn-icon btn-transparent-dark dropdown-toggle" id="searchDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i data-feather="search"></i></a>
-                    <!-- Dropdown - Search-->
-                    <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--fade-in-up" aria-labelledby="searchDropdown">
-                        <form class="form-inline mr-auto w-100">
-                            <div class="input-group input-group-joined input-group-solid">
-                                <input class="form-control" type="text" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2" />
-                                <div class="input-group-append">
-                                    <div class="input-group-text"><i data-feather="search"></i></div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </li>
-                <!-- Alerts Dropdown-->
-                <li class="nav-item dropdown no-caret d-none d-sm-block mr-3 dropdown-notifications">
-                    <a class="btn btn-icon btn-transparent-dark dropdown-toggle" id="navbarDropdownAlerts" href="javascript:void(0);" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i data-feather="bell"></i></a>
-                    <div class="dropdown-menu dropdown-menu-right border-0 shadow animated--fade-in-up" aria-labelledby="navbarDropdownAlerts">
-                        <h6 class="dropdown-header dropdown-notifications-header">
-                            <i class="mr-2" data-feather="bell"></i>
-                            Alerts Center
-                        </h6>
-                        <!-- Example Alert 1-->
-                        <a class="dropdown-item dropdown-notifications-item" href="#!">
-                            <div class="dropdown-notifications-item-icon bg-warning"><i data-feather="activity"></i></div>
-                            <div class="dropdown-notifications-item-content">
-                                <div class="dropdown-notifications-item-content-details">December 29, 2020</div>
-                                <div class="dropdown-notifications-item-content-text">This is an alert message. It's nothing serious, but it requires your attention.</div>
-                            </div>
-                        </a>
-                        <!-- Example Alert 2-->
-                        <a class="dropdown-item dropdown-notifications-item" href="#!">
-                            <div class="dropdown-notifications-item-icon bg-info"><i data-feather="bar-chart"></i></div>
-                            <div class="dropdown-notifications-item-content">
-                                <div class="dropdown-notifications-item-content-details">December 22, 2020</div>
-                                <div class="dropdown-notifications-item-content-text">A new monthly report is ready. Click here to view!</div>
-                            </div>
-                        </a>
-                        <!-- Example Alert 3-->
-                        <a class="dropdown-item dropdown-notifications-item" href="#!">
-                            <div class="dropdown-notifications-item-icon bg-danger"><i class="fas fa-exclamation-triangle"></i></div>
-                            <div class="dropdown-notifications-item-content">
-                                <div class="dropdown-notifications-item-content-details">December 8, 2020</div>
-                                <div class="dropdown-notifications-item-content-text">Critical system failure, systems shutting down.</div>
-                            </div>
-                        </a>
-                        <!-- Example Alert 4-->
-                        <a class="dropdown-item dropdown-notifications-item" href="#!">
-                            <div class="dropdown-notifications-item-icon bg-success"><i data-feather="user-plus"></i></div>
-                            <div class="dropdown-notifications-item-content">
-                                <div class="dropdown-notifications-item-content-details">December 2, 2020</div>
-                                <div class="dropdown-notifications-item-content-text">New user request. Woody has requested access to the organization.</div>
-                            </div>
-                        </a>
-                        <a class="dropdown-item dropdown-notifications-footer" href="#!">View All Alerts</a>
-                    </div>
-                </li>
-                <!-- Messages Dropdown-->
-                <li class="nav-item dropdown no-caret d-none d-sm-block mr-3 dropdown-notifications">
-                    <a class="btn btn-icon btn-transparent-dark dropdown-toggle" id="navbarDropdownMessages" href="javascript:void(0);" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i data-feather="mail"></i></a>
-                    <div class="dropdown-menu dropdown-menu-right border-0 shadow animated--fade-in-up" aria-labelledby="navbarDropdownMessages">
-                        <h6 class="dropdown-header dropdown-notifications-header">
-                            <i class="mr-2" data-feather="mail"></i>
-                            Message Center
-                        </h6>
-                        <!-- Example Message 1  -->
-                        <a class="dropdown-item dropdown-notifications-item" href="#!">
-                            <img class="dropdown-notifications-item-img" src="assets/img/illustrations/profiles/profile-2.png" />
-                            <div class="dropdown-notifications-item-content">
-                                <div class="dropdown-notifications-item-content-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
-                                <div class="dropdown-notifications-item-content-details">Thomas Wilcox · 58m</div>
-                            </div>
-                        </a>
-                        <!-- Example Message 2-->
-                        <a class="dropdown-item dropdown-notifications-item" href="#!">
-                            <img class="dropdown-notifications-item-img" src="assets/img/illustrations/profiles/profile-3.png" />
-                            <div class="dropdown-notifications-item-content">
-                                <div class="dropdown-notifications-item-content-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
-                                <div class="dropdown-notifications-item-content-details">Emily Fowler · 2d</div>
-                            </div>
-                        </a>
-                        <!-- Example Message 3-->
-                        <a class="dropdown-item dropdown-notifications-item" href="#!">
-                            <img class="dropdown-notifications-item-img" src="assets/img/illustrations/profiles/profile-4.png" />
-                            <div class="dropdown-notifications-item-content">
-                                <div class="dropdown-notifications-item-content-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
-                                <div class="dropdown-notifications-item-content-details">Marshall Rosencrantz · 3d</div>
-                            </div>
-                        </a>
-                        <!-- Example Message 4-->
-                        <a class="dropdown-item dropdown-notifications-item" href="#!">
-                            <img class="dropdown-notifications-item-img" src="assets/img/illustrations/profiles/profile-5.png" />
-                            <div class="dropdown-notifications-item-content">
-                                <div class="dropdown-notifications-item-content-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
-                                <div class="dropdown-notifications-item-content-details">Colby Newton · 3d</div>
-                            </div>
-                        </a>
-                        <!-- Footer Link-->
-                        <a class="dropdown-item dropdown-notifications-footer" href="#!">Read All Messages</a>
-                    </div>
-                </li>
-                <!-- User Dropdown-->
-                <li class="nav-item dropdown no-caret mr-3 mr-lg-0 dropdown-user">
-                    <a class="btn btn-icon btn-transparent-dark dropdown-toggle" id="navbarDropdownUserImage" href="javascript:void(0);" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img class="img-fluid" src="assets/img/illustrations/profiles/profile-1.png" /></a>
-                    <div class="dropdown-menu dropdown-menu-right border-0 shadow animated--fade-in-up" aria-labelledby="navbarDropdownUserImage">
-                        <h6 class="dropdown-header d-flex align-items-center">
-                            <img class="dropdown-user-img" src="assets/img/illustrations/profiles/profile-1.png" />
-                            <div class="dropdown-user-details">
-                                <div class="dropdown-user-details-name">Valerie Luna</div>
-                                <div class="dropdown-user-details-email">vluna@aol.com</div>
-                            </div>
-                        </h6>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#!">
-                            <div class="dropdown-item-icon"><i data-feather="settings"></i></div>
-                            Account
-                        </a>
-                        <a class="dropdown-item" href="#!">
-                            <div class="dropdown-item-icon"><i data-feather="log-out"></i></div>
-                            Logout
-                        </a>
-                    </div>
-                </li>
-            </ul>
-        </nav>
-        <div id="layoutSidenav">
-            <div id="layoutSidenav_nav">
-                <nav class="sidenav shadow-right sidenav-light">
-                    <div class="sidenav-menu">
-                        <div class="nav accordion" id="accordionSidenav">
-                            <!-- Sidenav Menu Heading (Account)-->
-                            <!-- * * Note: * * Visible only on and above the sm breakpoint-->
-                            <div class="sidenav-menu-heading d-sm-none">Account</div>
-                            <!-- Sidenav Link (Alerts)-->
-                            <!-- * * Note: * * Visible only on and above the sm breakpoint-->
-                            <a class="nav-link d-sm-none" href="#!">
-                                <div class="nav-link-icon"><i data-feather="bell"></i></div>
-                                Alerts
-                                <span class="badge badge-warning-soft text-warning ml-auto">4 New!</span>
-                            </a>
-                            <!-- Sidenav Link (Messages)-->
-                            <!-- * * Note: * * Visible only on and above the sm breakpoint-->
-                            <a class="nav-link d-sm-none" href="#!">
-                                <div class="nav-link-icon"><i data-feather="mail"></i></div>
-                                Messages
-                                <span class="badge badge-success-soft text-success ml-auto">2 New!</span>
-                            </a>
-                            <!-- Sidenav Menu Heading (Core)-->
-                            <div class="sidenav-menu-heading"></div>
-                            <!-- Sidenav Accordion (Dashboard)-->
-                            <a class="nav-link collapsed" href="javascript:void(0);" data-toggle="collapse" data-target="#collapseDashboards" aria-expanded="false" aria-controls="collapseDashboards">
-                                <div class="nav-link-icon"><i data-feather="activity"></i></div>
-                                Home
-                                
-                            </a>
-                            
-                            <!-- Sidenav Heading (App Views)-->
-                            <div class="sidenav-menu-heading">REQUESTS</div>
-                            <!-- Sidenav Accordion (Pages)-->
-                            <a class="nav-link collapsed" href="request.php">
-                                <div class="nav-link-icon"><i data-feather="grid"></i></div>
-                                Requests
-                                <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                            </a>
-                              
-                                   
-                                    
-                            <!-- Sidenav Accordion (Flows)-->
-                            
-                            <!-- Sidenav Heading (UI Toolkit)-->
-                            <div class="sidenav-menu-heading">Deliveries</div>
-                            <!-- Sidenav Accordion (Layout)-->
-                            <a class="nav-link collapsed" href="javascript:void(0);" data-toggle="collapse" data-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
-                                <div class="nav-link-icon"><i data-feather="layout"></i></div>
-                                Deliveries
-                                <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                            </a>
-                           
-                            
-                            <!-- Sidenav Heading (Addons)-->
-                            <div class="sidenav-menu-heading">Submissions</div>
-                            <!-- Sidenav Link (Charts)-->
-                            <a class="nav-link" href="charts.html">
-                                <div class="nav-link-icon"><i data-feather="bar-chart"></i></div>
-                                Submissions
-                            </a>
-                            <!-- Sidenav Link (Tables)-->
-                            <div class="sidenav-menu-heading">Reports</div>
-                            <a class="nav-link" href="charts.html">
-                                <div class="nav-link-icon"><i data-feather="bar-chart"></i></div>
-                                Reports
-                            </a>
-
-                            <div class="sidenav-menu-heading">Settings</div>
-                            <!-- Sidenav Accordion (Layout)-->
-                            <a class="nav-link collapsed" href="javascript:void(0);" data-toggle="collapse" data-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
-                                <div class="nav-link-icon"><i data-feather="layout"></i></div>
-                                Settings
-                                <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                            </a>
-                           
-                        </div>
-                    </div>
-                    <!-- Sidenav Footer-->
-                    <div class="sidenav-footer">
-                        <div class="sidenav-footer-content">
-                            <div class="sidenav-footer-subtitle">Logged in as:</div>
-                            <div class="sidenav-footer-title">Valerie Luna</div>
-                        </div>
-                    </div>
-                </nav>
-            </div>
+        <?php include 'header.php'; ?>
+		<div id="layoutSidenav">
+		<?php include 'left_nav-3.php'; ?>
             <div id="layoutSidenav_content">
                 <main>
+                    <header class="page-header page-header-dark bg-gradient-primary-to-secondary pb-10">
+                        <div class="container">
+                            <div class="page-header-content pt-4">
+                                <div class="row align-items-center justify-content-between">
+                                    <div class="col-auto mt-4">
+                                        <h1 class="page-header-title">
+                                            <div class="page-header-icon"><i data-feather="edit-3"></i></div>
+                                            Request
+                                        </h1>
+                                        <div class="page-header-subtitle">Complete the form below:</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </header>
                     <!-- Main page content-->
-                    <div class="container-fluid px-1 px-md-4 py-5 mx-auto">
-    <div class="row d-flex justify-content-center">
-        <div class="col-12 col-md-11 col-lg-10 col-xl-9">
-            <div class="card card0 border-0">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="card card00 m-2 border-0">
-                        <div class="text-center mt-2">
-                        <h2 > Make Request</h2>
-                        </div>       
-                     
-                     <!-- request form  -->
-                   
-     <form class="container-fluid m-2 justify-content-center" method="post">
-                    
-                    <div class="form-group">
-                        <label for="exampleFormControlSelect1">Schedule name</label>
-                        <select class="form-control" id="exampleFormControlSelect1">
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleFormControlSelect1">Test name</label>
-                        <select class="form-control" id="exampleFormControlSelect1">
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleFormControlSelect1">parameter name</label>
-                        <select class="form-control" id="exampleFormControlSelect1">
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleFormControlSelect1">Equipment name</label>
-                        <select class="form-control" id="exampleFormControlSelect1">
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleFormControlSelect1">Confirm accreditation</label>
-                        <select class="form-control" id="exampleFormControlSelect1">
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
-                        </select>
-                    </div>
-
-                    <button type="button" class="btn btn-primary btn-md d-flex btn-block">Submit</button>
-                  
+                    <div class="container mt-n10">
+						<div class="row">
+                            <div class="col-xl-4 col-md-6 mb-4">
+                                <!-- Dashboard info widget 1-->
+                                <div class="card border-top-0 border-bottom-0 border-right-0 border-left-lg border-primary h-100">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center">
+                                            <div class="flex-grow-1">
+                                                <div class="small font-weight-bold text-primary mb-1">Tests/Parameters added to cart</div>
+                                                <div class="h5">
+												<?php
+												$tests = $objRequest->count_cart_items($user_id);
+												echo $tests ;
+												?>
+												</div>
+                                                <div class="text-xs font-weight-bold text-success d-inline-flex align-items-center">
+                                                    <i class="mr-1" data-feather="trending-up"></i>
+                                                    
+                                                </div>
+                                            </div>
+                                            <div class="ml-2"><i class="fas fa-shopping-cart fa-2x text-gray-200"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+							<div class="col-xl-4 col-md-6 mb-4">
+                                <!-- Dashboard info widget 1-->
+                                <div class="card border-top-0 border-bottom-0 border-right-0 border-left-lg border-primary h-100">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center">
+                                            <div class="flex-grow-1">
+                                                <div class="small font-weight-bold text-success mb-1">Total Amount</div>
+                                                <div class="h5">
+												<?php
+												$amount = $objRequest->sum_cart_costs($user_id);
+												
+												echo $amount;
+												?>
+												</div>
+                                                <div class="text-xs font-weight-bold text-success d-inline-flex align-items-center">
+                                                    <i class="mr-1" data-feather="trending-up"></i>
+                                                    
+                                                </div>
+                                            </div>
+                                            <div class="ml-2"><i class="fas fa-dollar-sign fa-2x text-gray-200"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-md-6 mb-4">
+                                <!-- Dashboard info widget 2-->
+                                <div class="card border-top-0 border-bottom-0 border-right-0 border-left-lg border-secondary h-100">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center">
+                                            <div class="flex-grow-1">
+                                                <div class="small font-weight-bold text-secondary mb-1">Total requests submitted</div>
+                                                <div class="h5">
+												<?php
+												$requests = $objRequest->count_requests($user_id);
+												
+												echo $requests;
+												?>
+												</div>
+                                                <div class="text-xs font-weight-bold text-success d-inline-flex align-items-center">
+                                                    <i class="mr-1" data-feather="trending-up"></i>
+                                                    
+                                                </div>
+                                            </div>
+                                            <div class="ml-2"><i class="fas fa-envelope fa-2x text-gray-200"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <!-- Default Bootstrap Form Controls-->
+                                <div id="default">
+                                    <div class="card mb-4">
+                                        <div class="card-header">Enter the assay details</div>
+                                        <div class="card-body">
+                                            <!-- Component Preview-->
+                                            <div class="sbp-preview">
+                                                <div class="sbp-preview-content">
+                                                    <form method="post" enctype="multipart/form-data">
+                                                        <div class="form-row" >
+															<div class="form-group col-md-6">
+                                                            <label for="category"><b>Select test category:</b></label>
+                                                            <select class="form-control" name="category" id="category" style="padding:5px;">
+                                                                <option>Click here for category list</option>
+																	<?php														
+																	$datas = $objRequest->get_test_categories();
+																	foreach($datas as $data){
+																	$category = $data['test_category_name'];
+																	echo '<option>' .$category. '</option>';
+																	}?>
+                                                            </select>
+															</div>
+															<div class="form-group col-md-6">
+																<label for="schedule"><b>Select schedule:</b></label>
+																<select class="form-control" name="schedule" id="schedule" style="padding:5px;">
+																	<option>Click here for schedule list</option>
+																	<?php
+																	$datas = $objRequest->get_schedule();
+																	foreach($datas as $data){
+																	$schedule = $data['schedule_name'];
+																	echo '<option>' .$schedule. '</option>';
+																	}
+																	?>
+																</select>
+															</div>
+                                                        </div>
+														<div class="form-row">
+															<div class=" form-group col-md-6">
+																<label for="parameter"><b>Select test parameter:</b></label>
+																<select class="form-control" name="parameter" id="parameter" style="padding:5px;">
+																	<option>Click here for parameter list</option>
+																	<?php	
+																	$datas = $objRequest->get_parameters();
+																	foreach($datas as $data){
+																	$test_name = $data['test_name'];
+																	echo '<option>' .$test_name. '</option>';
+																	}
+																	?>
+																</select>
+															</div>
+															<div class="form-group col-md-6">
+																<label for="other_parameter"><b>Other parameter</b></label>
+																<input class="form-control" name="other_parameter" id="other_parameter" type="text" placeholder="Paramemters that are not on the drop down list" />
+															</div>
+														</div>
+														<div class="form-group">
+                                                            <label for="equipment"><b>Equipment</b></label>
+															<input class="form-control" name="equipment" id="equipment" type="text" placeholder="Enter equipment used in the assay" />
+                                                        </div>
+														<div class="form-group">
+                                                            <label for="technique"><b>Technique</b></label>
+															<input class="form-control" name="technique" id="technique" type="text" placeholder="Enter technique used for the assay" />
+                                                        </div>
+														<div class="form-row">
+															<div class="form-group col-md-6">
+																<label for="rapid"><b>Is this a rapid diagnostic test?</b></label>
+																<div class="custom-control custom-radio">
+																	<input class="custom-control-input" id="no" type="radio" name="no" />
+																	<label class="custom-control-label" for="no">No</label>
+																</div>
+																<div class="custom-control custom-radio">
+																	<input class="custom-control-input" id="yes" type="radio" name="yes" />
+																	<label class="custom-control-label" for="yes">Yes</label>
+																</div>
+															</div>
+															<div class="form-group col-md-6">
+																<label for="invoice_name"><b>Invoice Addressed to:</b></label>
+																<input class="form-control" name="invoice_name" id="invoice_name" type="text" placeholder="Leave Blank if invoice is to be addressed to your ILQAS account admin" />
+															</div>
+														</div>
+														<!--Hidden Input for the user id for db normalization-->
+														<input type="hidden" name="user_id" value="<?php echo $user_id; ?>"/>
+														<div class="sbp-preview-text">
+															<div class="d-flex justify-content-between">
+																<button name="add" type="submit" class="btn btn-primary rounded-pill px-4 mr-2 my-1">Add test/parameter</button>
+																<a class="btn btn-secondary rounded-pill px-4 mr-2 my-1" href="invoice.php?user_id=<?php echo$user_id;?>">View Cart Items</a>
+																<button name="empty" type="submit" class="btn btn-danger rounded-pill px-4 mr-2 my-1">Empty cart</button>
+																<button name="submit" type="submit" class="btn btn-success rounded-pill px-4 mr-2 my-1">Submit Request</button>
+															</div>
+														</div>
+												<?php
+												if(isset($_POST['add'])){
+													
+													//Parameter details
+													$category = $_POST['category'];
+													$schedule = $_POST['schedule'];
+													$parameter = $_POST['parameter'];
+													$other_parameter = $_POST['other_parameter'];
+													$equipment = $_POST['equipment'];
+													$technique = $_POST['technique'];
+													if(isset($_POST['yes'])){
+														$rdt = 'yes'; 
+													}if(isset($_POST['no'])){
+														$rdt = 'no';
+													}
+													$invoice_name = $_POST['invoice_name'];
+													$user_id = $_POST['user_id'];
+													if($category=='Click here for category list'||$schedule=='Click here for schedule list'||$parameter=='Click here for parameter list'||empty($equipment)||empty($technique)){
+														echo"<script>alert('You have not entered any items in the cart. Complete request form and add parameters')</script>";
+														echo"<script>window.open('make_request.php?user_id=$user_id,'_self')</script>";
+													}else{
+													$insert = $objRequest->insert_cat($user_id, $category, $schedule, $parameter, $other_parameter, $equipment, $technique, $rdt, $invoice_name);
+													}
+													
+												}
+												
+												if(isset($_POST['submit'])){
+													$save_invoice = $objRequest->save_invoice($user_id);
+												}
+												
+												if(isset($_POST['empty'])){
+													$empty_cart = $objRequest->empty_cart($user_id);
+												}
+												?>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             
                         </div>
-                       
-                        </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
                 </main>
+				<?php include 'footer.php'; ?>
             </div>
         </div>
+		
         <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="js/scripts.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js" crossorigin="anonymous"></script>
-        <script src="assets/demo/chart-area-demo.js"></script>
-        <script src="assets/demo/chart-bar-demo.js"></script>
-        <script src="assets/demo/chart-pie-demo.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/components/prism-core.min.js" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/plugins/autoloader/prism-autoloader.min.js" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js" crossorigin="anonymous"></script>
         <script src="assets/demo/date-range-picker-demo.js"></script>
-        <script src="js/make_request.js"></script>
+		<!--Lets add a script to prevent the form from resubmitting data once the user is redirected-->
+		<script>
+		if ( window.history.replaceState ) {
+		  window.history.replaceState( null, null, window.location.href );
+		}
+		</script>
     </body>
 </html>
+<?php } ?>

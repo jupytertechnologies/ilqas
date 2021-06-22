@@ -97,7 +97,7 @@ include ("includes/users.php");
 											</div>
                                             <!-- Form Group (create account submit)-->
                                             <div class="form-group mt-4 mb-0">
-												<button class="btn btn-primary btn-block" type = "submit" name="register" value="register">Create Account</button>
+												<button class="btn btn-primary btn-block" type = "submit" name="register">Create Account</button>
 												<?php
 												//Insert the form data into the users db
 												if(isset($_POST['register'])){

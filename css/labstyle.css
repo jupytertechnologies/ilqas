@@ -1,0 +1,227 @@
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+/*****************************************************************************************/
+
+*{
+	margin: 0;
+	padding: 0;
+	font-family: calibri;
+}
+
+.lab-container{
+	width: 60%;
+	height: 90%;
+	margin: 8% auto;
+	background: #fff;
+	border-radius: 5px; 
+	position: relative;
+	border: none;
+	overflow: hidden;
+}
+
+h2{
+	font-size: 24px;
+	text-align: center;
+	margin-top: 15px;
+	margin-bottom: 30px;
+	color: #777;
+}
+
+h3{
+	text-align: center;
+	margin-bottom: 20px;
+	color: #777;
+}
+
+.lab-container form{
+	width: 80%;
+	position: absolute; 
+	top: 50px;
+	left: 10%;
+	right: 10%;
+	transition: 0.5s;
+}
+
+form input{
+	width: 100%;
+	padding: 10px 5px;
+	margin: 10px 0; 
+	border: 1px solid #dcdcdc;
+	border-radius: 5px;
+	background: transparent;
+}
+::placeholder{
+	color: #E5E2E1;
+	font-size: 16px;
+}
+
+form label{
+	font-size: 18px;
+	color: #777;
+}
+
+#datas {
+	display:flex;
+}
+
+form div .col{
+	width: 50%;
+}
+
+form select{
+	width: 100%;
+	padding: 10px 5px;
+	margin: 10px 0; 
+	border: 1px solid #dcdcdc;
+	border-radius: 5px;
+	background: transparent;
+}
+
+.btn-box{
+	width: 100px;
+	margin: 30px auto; 
+	text-align: center;
+	display: inline;
+}
+
+form button{
+	width: 100px;
+	height: 35px; 
+	margin: 0 10px; 
+	background: linear-gradient(to right, #0000ff, #6495ed);
+	border-radius: 20px; 
+	border: 0; 
+	outline: none; 
+	color: #fff;
+	cursor: pointer;
+}
+
+#next1{
+	margin: 10px 0 0 500px;
+}
+
+#next2{
+	margin: 10px 0 0 350px;
+}
+
+#submit{
+	margin: 10px 0 0 350px;
+}
+
+#form2{
+	left: 1000px; 
+}
+
+#form3{
+	left: 1000px; 
+}
+
+.step-row{
+	width: 100%;
+	height: 50px;
+	margin: 0 auto;	
+	display: flex;
+	align-items: center;
+	box-shadow: 0 -1px 5px -1px #000;
+	position: absolute;
+}
+
+.step-col{
+	width: 100%;
+	text-align: center;
+	color: #000;
+	font-size: 24px;
+	font-weight: bold;
+	position: relative;
+}
+
+#progress{
+	position: absolute; 
+	height: 100%;
+	width: 33%;
+	background: linear-gradient(to right, #0000ff, #6495ed);
+	transition: 1s;
+}
+
+#progress::after{
+	content: '';
+	height: 100%;
+	width: 0;
+	border-top: 20px solid transparent; 
+	border-bottom: 20px solid transparent;
+	position: absolute;
+	right: -20px; 
+	top: 0; 
+	border-left: 20px solid #6495ed;
+	
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

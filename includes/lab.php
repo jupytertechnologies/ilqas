@@ -83,13 +83,12 @@ Class Labs extends Db {
 	
 	//Get Laboratory details by Lan Name 
 	public function get_lab_name($user_id){
-		$row = [];
-		$sql = "SELECT * FROM `lab_details` WHERE `lab_name` = '$user_id'";
+		$sql = "SELECT * FROM `lab_details` WHERE `user_id` = '$user_id'";
 		$result = $this->connect()->query($sql);
-		while($datas = $result->fetch_assoc()){
-			$row = $datas;
+		if($result){
+		$datas[] = $result->fetch_assoc();
 		}
-		return $row;
+		return $datas;
 	}
 	
 	//Get Laboratory details by ID 
@@ -188,8 +187,18 @@ Class Labs extends Db {
 		$sql = "UPDATE `lab_details` SET `entity_name`='$entity_name',`relationship`='$relationship',`payment_mode`='$payment_mode',`mobile_money`='$mobile_money',`bank_acc`='$bank_acc',`bank_name`='$bank_name' WHERE `user_id`='$user_id' ";
 		$result = $this->connect()->query($sql);
 		if($result){
+			//If the user is accredited, open the accredited laboratory dashboard-2
+			$sql = "select * from `users` where `user_id`='$user_id' ";
+			$result = $this->connect()->query($sql);
+			$row = $result->fetch_assoc();
+			$accredited = $row['lab_accredited'];
+			if($accredited == 1){
 			echo'<script>alert("Payment Details updated successfully.");</script>';
 			echo"<script>window.open('dashboard-2.php?user=$user_id','_self')</script>";
+			}elseif($accredited == 2){
+				echo'<script>alert("Payment Details updated successfully.");</script>';
+				echo"<script>window.open('dashboard-3.php?user=$user_id','_self')</script>";
+			}
 		}
 		
 	}

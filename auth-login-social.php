@@ -4,6 +4,12 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 include ("includes/users.php");
+
+if(isset($_GET['token'])){
+    $token = $_GET['token'];
+    $objToken = new User();
+    $activate = $objToken->activate($token);
+}else {
 ?>
 <html lang="en">
     <head>
@@ -104,3 +110,4 @@ include ("includes/users.php");
         <script src="js/scripts.js"></script>
     </body>
 </html>
+<?php } ?>

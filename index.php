@@ -1,4 +1,19 @@
-<!DOCTYPE html>
+<?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+include ("includes/users.php");
+
+if(isset($_GET['logout'])){
+	$user_id = $_GET['logout'];	
+	
+	//Create an object from the user class
+	$objUser = new User();
+	$exit = $objUser->logout($user_id);
+}
+
+?>
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
